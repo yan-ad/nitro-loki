@@ -7,6 +7,7 @@
     "build": "pnpm -r build",
     "dev": "pnpm -r dev",
     "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "play:nuxt": "pnpm -C playground/nuxt dev",
     "play:nitro": "pnpm -C playground/nitro dev",

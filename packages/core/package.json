@@ -18,10 +18,12 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "lint": "eslint src/",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "devDependencies": {
     "typescript": "catalog:",
-    "unbuild": "catalog:"
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   }
 }

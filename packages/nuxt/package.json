@@ -18,7 +18,8 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "lint": "eslint src/",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@nitro-loki/core": "workspace:*",
@@ -28,7 +29,8 @@
     "@nuxt/kit": "catalog:",
     "@nuxt/schema": "catalog:",
     "nuxt": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "nuxt": ">=3.12"

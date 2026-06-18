@@ -18,14 +18,16 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "lint": "eslint src/",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@nitro-loki/core": "workspace:*"
   },
   "devDependencies": {
     "nitro": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "nitro": ">=2.10"
