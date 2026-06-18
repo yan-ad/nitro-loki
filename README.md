@@ -1,14 +1,24 @@
-# 🐍 Uloki - Universal Loki Log Adapter
+# 🐍 Uloki — Universal Loki Log Adapter
 
+> **ulo** (Javanese for snake) + **loki** (Grafana Loki)
+>
 > Loki logging transport for [Nitro](https://nitro.unjs.io), [Nuxt](https://nuxt.com), and [Elysia](https://elysiajs.com).
 
-[![CI](https://github.com/yan-ad/nitro-loki/actions/workflows/test.yml/badge.svg)](https://github.com/yan-ad/nitro-loki/actions/workflows/test.yml)
+[![CI](https://github.com/yan-ad/uloki/actions/workflows/test.yml/badge.svg)](https://github.com/yan-ad/uloki/actions/workflows/test.yml)
 [![npm](https://img.shields.io/npm/v/uloki)](https://www.npmjs.com/package/uloki)
 [![license](https://img.shields.io/github/license/yan-ad/uloki)](./LICENSE)
+[![docs](https://img.shields.io/badge/docs-uloki.vercel.app-blue)](https://uloki.vercel.app)
 
 Ship structured logs from your Nitro, Nuxt, or Elysia server to [Grafana Loki](https://grafana.com/oss/loki/) with automatic batching, configurable redaction, and zero runtime overhead when disabled.
 
----
+## Features
+
+- **Auto-batching** — Buffers log entries and flushes in configurable batches
+- **Redaction** — Built-in sensitive field detection + custom regex rules
+- **Request logging** — Automatic HTTP request metadata capture in logfmt format
+- **Multi-framework** — Drop-in plugins for Nitro, Nuxt, and Elysia
+- **Type-safe** — Full TypeScript support with exported types
+- **Zero-overhead disabled** — No HTTP calls when `enabled: false`
 
 ## Packages
 
@@ -18,8 +28,6 @@ Ship structured logs from your Nitro, Nuxt, or Elysia server to [Grafana Loki](h
 | [`@uloki/nitro`](./packages/nitro) | nitro | Nitro server plugin — hooks, runtime, config |
 | [`@uloki/nuxt`](./packages/nuxt) | nuxt | Nuxt module — drop-in via `nuxt.config` |
 | [`@uloki/elysia`](./packages/elysia) | elysia | Elysia plugin — drop-in via `.use(uloki())` |
-
----
 
 ## Quick Start
 
@@ -104,7 +112,47 @@ const app = new Elysia()
   .listen(3000);
 ```
 
----
+## Configuration
+
+All packages share the same config shape:
+
+```ts
+interface NitroLokiConfig {
+  endpoint?: string;              // Loki push endpoint
+  labels?: Record<string, string>; // Default labels on every entry
+  enabled?: boolean;              // Enable/disable (default: true)
+  batchSize?: number;             // Entries before auto-flush (default: 10)
+  flushInterval?: number;         // Max ms between flushes (default: 5000)
+  redact?: (string | RegExp)[];   // Redaction patterns
+}
+```
+
+## Redaction
+
+Built-in sensitive field detection covers `password`, `token`, `secret`, `apiKey`, `authorization`, `cookie`, and others. Add custom rules:
+
+```ts
+loki: {
+  redact: [
+    "credit_card",                // field name
+    "ssn",                        // field name
+    /Bearer\s+\S+/g,              // regex pattern
+    /x-api-key:\s*\S+/gi,         // regex pattern
+  ],
+}
+```
+
+Redacted values are replaced with `[REDACTED]` before shipping to Loki.
+
+## Request Logging
+
+The Nitro runtime automatically captures HTTP request metadata and pushes structured access logs:
+
+```
+method=GET path=/api/users status=200 duration_ms=12 ua="Mozilla/5.0 ..."
+```
+
+Labels include `method`, `status`, and `level` (`info` / `warn` / `error`) for easy filtering in Grafana.
 
 ## API
 
@@ -152,7 +200,6 @@ export default defineNuxtConfig({
 | `uloki(config?)` | Elysia plugin — wires Loki logger into Elysia lifecycle |
 
 ```ts
-// Usage in Elysia
 import { uloki } from "@uloki/elysia";
 
 new Elysia()
@@ -169,61 +216,15 @@ new Elysia()
 
 The plugin attaches `store.loki` with `.log()` and `.flush()` for manual logging inside route handlers.
 
----
+## Documentation
 
-## Configuration
-
-All packages share the same config shape:
-
-```ts
-interface NitroLokiConfig {
-  endpoint?: string;              // Loki push endpoint
-  labels?: Record<string, string>; // Default labels on every entry
-  enabled?: boolean;              // Enable/disable (default: true)
-  batchSize?: number;             // Entries before auto-flush (default: 10)
-  flushInterval?: number;         // Max ms between flushes (default: 5000)
-  redact?: (string | RegExp)[];   // Redaction patterns
-}
-```
-
----
-
-## Redaction
-
-Built-in sensitive field detection covers `password`, `token`, `secret`, `apiKey`, `authorization`, `cookie`, and others. Add custom rules:
-
-```ts
-loki: {
-  redact: [
-    "credit_card",                // field name
-    "ssn",                        // field name
-    /Bearer\s+\S+/g,              // regex pattern
-    /x-api-key:\s*\S+/gi,         // regex pattern
-  ],
-}
-```
-
-Redacted values are replaced with `[REDACTED]` before shipping to Loki.
-
----
-
-## Request Logging
-
-The Nitro runtime automatically captures HTTP request metadata and pushes structured access logs:
-
-```
-method=GET path=/api/users status=200 duration_ms=12 ua="Mozilla/5.0 ..."
-```
-
-Labels include `method`, `status`, and `level` (`info` / `warn` / `error`) for easy filtering in Grafana.
-
----
+Full docs at [uloki.vercel.app](https://uloki.vercel.app) — installation guide, configuration reference, core API, and integration docs.
 
 ## Development
 
 ```bash
 # Clone
-git clone https://github.com/yan-ad/nitro-loki.git
+git clone https://github.com/yan-ad/uloki.git
 cd uloki
 
 # Install
@@ -245,8 +246,6 @@ pnpm test
 pnpm play:nuxt    # Nuxt dev server with Loki logging
 pnpm play:nitro   # Nitro standalone dev server
 ```
-
----
 
 ## License
 
