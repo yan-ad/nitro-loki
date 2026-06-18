@@ -2,9 +2,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useLokiRuntime } from "./runtime";
 import type { NitroLokiConfig } from "./types";
 
-// Mock @nitro-loki/core
-vi.mock("@nitro-loki/core", () => {
-  const actual = vi.importActual("@nitro-loki/core");
+// Mock nitro-loki
+vi.mock("nitro-loki", () => {
+  const actual = vi.importActual("nitro-loki");
   return {
     LokiLogger: vi.fn().mockImplementation((opts: any) => ({
       log: vi.fn(),

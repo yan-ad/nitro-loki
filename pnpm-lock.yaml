@@ -59,7 +59,7 @@ importers:
 
   packages/nitro:
     dependencies:
-      '@nitro-loki/core':
+      nitro-loki:
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -78,12 +78,12 @@ importers:
 
   packages/nuxt:
     dependencies:
-      '@nitro-loki/core':
-        specifier: workspace:*
-        version: link:../core
       '@nitro-loki/nitro':
         specifier: workspace:*
         version: link:../nitro
+      nitro-loki:
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@nuxt/kit':
         specifier: 'catalog:'

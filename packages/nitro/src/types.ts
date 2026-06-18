@@ -1,4 +1,4 @@
-import type { LokiLogEntry } from "@nitro-loki/core";
+import type { LokiLogEntry } from "nitro-loki";
 
 /**
  * Metadata attached to every logging context by the Nitro plugin.

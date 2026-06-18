@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-import { LokiLogger, type LokiLogEntry } from "@nitro-loki/core";
+import { LokiLogger, type LokiLogEntry } from "nitro-loki";
 import { resolveConfig } from "./config";
 import type { NitroLokiConfig } from "./types";
 

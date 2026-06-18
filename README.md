@@ -14,7 +14,7 @@ Ship structured logs from your Nitro/Nuxt server to [Grafana Loki](https://grafa
 
 | Package | npm | Description |
 |---|---|---|
-| [`@nitro-loki/core`](./packages/core) | core | Logger, transport, redaction, request helpers |
+| [`nitro-loki`](./packages/core) | Core | Logger, transport, redaction, request helpers |
 | [`@nitro-loki/nitro`](./packages/nitro) | nitro | Nitro server plugin — hooks, runtime, config |
 | [`@nitro-loki/nuxt`](./packages/nuxt) | nuxt | Nuxt module — drop-in via `nuxt.config` |
 
@@ -64,11 +64,11 @@ export default defineNitroConfig({
 ### Core (programmatic)
 
 ```bash
-pnpm add @nitro-loki/core
+pnpm add nitro-loki
 ```
 
 ```ts
-import { LokiLogger } from "@nitro-loki/core";
+import { LokiLogger } from "nitro-loki";
 
 const logger = new LokiLogger({
   endpoint: "http://localhost:3100",
@@ -88,7 +88,7 @@ await logger.dispose();
 
 ## API
 
-### `@nitro-loki/core`
+### `nitro-loki`
 
 | Export | Description |
 |---|---|

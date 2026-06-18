@@ -1,5 +1,5 @@
 {
-  "name": "@nitro-loki/core",
+  "name": "nitro-loki",
   "version": "0.0.1",
   "type": "module",
   "description": "Core primitives for Loki logging — logger, transport, redaction, batching",

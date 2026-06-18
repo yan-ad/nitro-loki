@@ -22,7 +22,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@nitro-loki/core": "workspace:*"
+    "nitro-loki": "workspace:*"
   },
   "devDependencies": {
     "nitro": "catalog:",
