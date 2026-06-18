@@ -1,0 +1,36 @@
+{
+  "name": "@uloki/elysia",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Elysia plugin for uloki — drop-in Loki logging for your Elysia server",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "uloki": "workspace:*"
+  },
+  "devDependencies": {
+    "elysia": "catalog:",
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "elysia": ">=1.0"
+  }
+}

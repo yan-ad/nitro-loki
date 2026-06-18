@@ -12,3 +12,4 @@ catalog:
   unbuild: ^3.3.0
   vitest: ^3.0.0
   "@types/node": ^22.0.0
+  elysia: ^1.2.0

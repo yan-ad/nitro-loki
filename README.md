@@ -1,12 +1,12 @@
 # 🐍 Uloki - Universal Loki Log Adapter
 
-> Loki logging transport for [Nitro](https://nitro.unjs.io) — the server engine that powers [Nuxt](https://nuxt.com).
+> Loki logging transport for [Nitro](https://nitro.unjs.io), [Nuxt](https://nuxt.com), and [Elysia](https://elysiajs.com).
 
 [![CI](https://github.com/yan-ad/nitro-loki/actions/workflows/test.yml/badge.svg)](https://github.com/yan-ad/nitro-loki/actions/workflows/test.yml)
 [![npm](https://img.shields.io/npm/v/uloki)](https://www.npmjs.com/package/uloki)
 [![license](https://img.shields.io/github/license/yan-ad/uloki)](./LICENSE)
 
-Ship structured logs from your Nitro/Nuxt server to [Grafana Loki](https://grafana.com/oss/loki/) with automatic batching, configurable redaction, and zero runtime overhead when disabled.
+Ship structured logs from your Nitro, Nuxt, or Elysia server to [Grafana Loki](https://grafana.com/oss/loki/) with automatic batching, configurable redaction, and zero runtime overhead when disabled.
 
 ---
 
@@ -17,6 +17,7 @@ Ship structured logs from your Nitro/Nuxt server to [Grafana Loki](https://grafa
 | [`uloki`](./packages/core) | Core | Logger, transport, redaction, request helpers |
 | [`@uloki/nitro`](./packages/nitro) | nitro | Nitro server plugin — hooks, runtime, config |
 | [`@uloki/nuxt`](./packages/nuxt) | nuxt | Nuxt module — drop-in via `nuxt.config` |
+| [`@uloki/elysia`](./packages/elysia) | elysia | Elysia plugin — drop-in via `.use(uloki())` |
 
 ---
 
@@ -84,6 +85,25 @@ logger.log({ line: "Job completed", labels: { level: "info" } });
 await logger.dispose();
 ```
 
+### Elysia
+
+```bash
+pnpm add @uloki/elysia
+```
+
+```ts
+import { Elysia } from "elysia";
+import { uloki } from "@uloki/elysia";
+
+const app = new Elysia()
+  .use(uloki({
+    endpoint: "http://localhost:3100",
+    labels: { app: "my-api" },
+  }))
+  .get("/", () => "ok")
+  .listen(3000);
+```
+
 ---
 
 ## API
@@ -124,6 +144,30 @@ export default defineNuxtConfig({
   },
 });
 ```
+
+### `@uloki/elysia`
+
+| Export | Description |
+|---|---|
+| `uloki(config?)` | Elysia plugin — wires Loki logger into Elysia lifecycle |
+
+```ts
+// Usage in Elysia
+import { uloki } from "@uloki/elysia";
+
+new Elysia()
+  .use(uloki({
+    endpoint: "http://localhost:3100",
+    labels: { app: "my-service" },
+    batchSize: 10,
+    flushInterval: 5000,
+    requestLogging: true,
+    redact: ["token", "secret"],
+  }))
+  .listen(3000);
+```
+
+The plugin attaches `store.loki` with `.log()` and `.flush()` for manual logging inside route handlers.
 
 ---
 
